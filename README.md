@@ -24,12 +24,12 @@ yarn add @appoly/vue-sheet
 <template>
   <Sheet v-model:open="isOpen" position="right">
     <template #trigger>
-      <button>Open Panel</button>
+      <button>Open Sheet</button>
     </template>
     
     <div>
-      <!-- Your panel content here -->
-      Panel content
+      <!-- Your sheet content here -->
+      Sheet content
     </div>
   </Sheet>
 </template>
@@ -46,17 +46,17 @@ const isOpen = ref(false)
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `position` | `String` | `"right"` | Panel slide direction (left/right/top/bottom) |
-| `width` | `String` | `"500px"` | Width of panel (when left/right) |
-| `height` | `String` | `"500px"` | Height of panel (when top/bottom) |
-| `maxWidth` | `String` | `"90%"` | Maximum width of panel |
-| `maxHeight` | `String` | `"90%"` | Maximum height of panel |
-| `open` | `Boolean` | `false` | Control panel open state |
-| `closeOnEscape` | `Boolean` | `true` | Close panel when Escape is pressed |
+| `position` | `String` | `"right"` | Sheet slide direction (left/right/top/bottom) |
+| `width` | `String` | `"500px"` | Width of sheet (when left/right) |
+| `height` | `String` | `"500px"` | Height of sheet (when top/bottom) |
+| `maxWidth` | `String` | `"90%"` | Maximum width of sheet |
+| `maxHeight` | `String` | `"90%"` | Maximum height of sheet |
+| `open` | `Boolean` | `false` | Control sheet open state |
+| `closeOnEscape` | `Boolean` | `true` | Close sheet when Escape is pressed |
 | `noTrigger` | `Boolean` | `false` | Disable default trigger |
 
 ## Slots
 
 - `trigger`: Custom trigger element
 - `close`: Custom close button
-- Default slot: Panel content
+- Default slot: Sheet content
