@@ -22,7 +22,7 @@ yarn add @appoly/vue-sheet
 
 ```vue
 <template>
-  <Sheet v-model:open="isOpen" position="right">
+  <Sheet v-model:open="isOpen" @update:open="isOpen = $event" position="right">
     <template #trigger>
       <button>Open Sheet</button>
     </template>
