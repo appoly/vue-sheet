@@ -1,24 +1,10 @@
-import { ref as y, computed as u, onMounted as _, onBeforeUnmount as k, watch as S, openBlock as i, createElementBlock as c, Fragment as b, renderSlot as p, createCommentVNode as h, createBlock as x, Teleport as E, createElementVNode as r, normalizeClass as $, normalizeStyle as B, unref as I, pushScopeId as C, popScopeId as W } from "vue";
-const O = (e, o) => {
+import { ref as k, computed as m, onMounted as b, onBeforeUnmount as x, watch as S, openBlock as a, createElementBlock as c, Fragment as _, renderSlot as u, createElementVNode as s, createCommentVNode as g, createBlock as E, Teleport as $, normalizeClass as B, normalizeStyle as C } from "vue";
+const W = (e, o) => {
   const t = e.__vccOpts || e;
-  for (const [n, l] of o)
-    t[n] = l;
+  for (const [i, n] of o)
+    t[i] = n;
   return t;
-}, g = (e) => (C("data-v-1431d556"), e = e(), W(), e), M = /* @__PURE__ */ g(() => /* @__PURE__ */ r("span", { style: { cursor: "pointer" } }, " Open ", -1)), T = /* @__PURE__ */ g(() => /* @__PURE__ */ r("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: "24",
-  height: "24",
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  "stroke-width": "2",
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round",
-  class: "lucide lucide-x"
-}, [
-  /* @__PURE__ */ r("path", { d: "M18 6 6 18" }),
-  /* @__PURE__ */ r("path", { d: "m6 6 12 12" })
-], -1)), j = { class: "slide-panel-content" }, z = {
+}, I = { class: "sheet-content" }, O = {
   __name: "Sheet",
   props: {
     position: {
@@ -50,60 +36,81 @@ const O = (e, o) => {
   },
   emits: ["update:open"],
   setup(e, { emit: o }) {
-    const t = e, n = y(!1), l = `sheet-label-${Math.random().toString(36).substring(7)}`, m = `sheet-desc-${Math.random().toString(36).substring(7)}`, v = u(() => ["top", "bottom"].includes(t.position)), f = u(() => v.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), w = () => {
-      window.addEventListener("keydown", d), n.value = !0, o("update:open", !0);
-    }, a = () => {
-      window.removeEventListener("keydown", d), n.value = !1, o("update:open", !1);
-    }, d = (s) => {
-      (s.key === "Escape" || s.key === "Esc") && closeOnEscape && a();
+    const t = e, i = o, n = k(!1), v = `sheet-label-${Math.random().toString(36).substring(7)}`, f = `sheet-desc-${Math.random().toString(36).substring(7)}`, w = m(() => ["top", "bottom"].includes(t.position)), y = m(() => w.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), p = () => {
+      window.addEventListener("keydown", d), n.value = !0, i("update:open", !0);
+    }, l = () => {
+      window.removeEventListener("keydown", d), n.value = !1, i("update:open", !1);
+    }, d = (r) => {
+      (r.key === "Escape" || r.key === "Esc") && closeOnEscape && l();
     };
-    return _(() => {
+    return b(() => {
       n.value = open;
-    }), k(() => {
+    }), x(() => {
       window.removeEventListener("keydown", d);
-    }), S(() => open, (s) => {
-      n.value = s;
-    }), (s, H) => (i(), c(b, null, [
-      e.noTrigger ? h("", !0) : (i(), c("div", {
+    }), S(() => open, (r) => {
+      n.value = r;
+    }), (r, h) => (a(), c(_, null, [
+      e.noTrigger ? g("", !0) : (a(), c("div", {
         key: 0,
-        onClick: w
+        onClick: p
       }, [
-        p(s.$slots, "trigger", {}, () => [
-          M
+        u(r.$slots, "trigger", {}, () => [
+          s("button", {
+            type: "button",
+            class: "open-btn",
+            "aria-controls": "sheet",
+            "aria-expanded": "false",
+            onClick: p
+          }, " Open ")
         ], !0)
       ])),
-      (i(), x(E, { to: "body" }, [
-        n.value ? (i(), c("div", {
+      (a(), E($, { to: "body" }, [
+        n.value ? (a(), c("div", {
           key: 0,
           class: "overlay",
-          onClick: a
-        })) : h("", !0),
-        r("div", {
-          class: $(["slide-panel", e.position, { open: n.value }]),
+          onClick: l
+        })) : g("", !0),
+        s("div", {
+          id: "sheet",
+          class: B(["sheet", e.position, { open: n.value }]),
           role: "dialog",
           "aria-modal": "true",
           tabindex: "-1",
-          style: B(I(f)),
-          "aria-labelledby": l,
-          "aria-describedby": m
+          style: C(y.value),
+          "aria-labelledby": v,
+          "aria-describedby": f
         }, [
-          r("button", {
+          s("button", {
             class: "close-btn",
-            onClick: a,
+            onClick: l,
             "aria-label": "Close"
           }, [
-            p(s.$slots, "close", {}, () => [
-              T
+            u(r.$slots, "close", {}, () => [
+              h[0] || (h[0] = s("svg", {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "24",
+                height: "24",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                "stroke-width": "2",
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                class: "lucide lucide-x"
+              }, [
+                s("path", { d: "M18 6 6 18" }),
+                s("path", { d: "m6 6 12 12" })
+              ], -1))
             ], !0)
           ]),
-          r("div", j, [
-            p(s.$slots, "default", {}, void 0, !0)
+          s("div", I, [
+            u(r.$slots, "default", {}, void 0, !0)
           ])
         ], 6)
       ]))
     ], 64));
   }
-}, A = /* @__PURE__ */ O(z, [["__scopeId", "data-v-1431d556"]]);
+}, T = /* @__PURE__ */ W(O, [["__scopeId", "data-v-3004d935"]]);
 export {
-  A as Sheet
+  T as Sheet
 };

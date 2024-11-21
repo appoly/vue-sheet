@@ -1,6 +1,6 @@
 # Vue Sheet
 
-A flexible, accessible, and customizable Sheet component for Vue 3. Insipired by [Shadcn](https://ui.shadcn.com/).
+A flexible, accessible, and customizable Sheet component for Vue 3. Inspired by [Shadcn](https://ui.shadcn.com/).
 
 ## Features
 
@@ -37,9 +37,11 @@ yarn add @appoly/vue-sheet
 <script setup>
 import { ref } from 'vue'
 import { Sheet } from '@appoly/vue-sheet'
+import'@appoly/vue-sheet/dist/style.css';
 
 const isOpen = ref(false)
 </script>
+
 ```
 
 ## Props
