@@ -1,0 +1,53 @@
+{
+    "name": "@appoly/vue-sheet",
+    "version": "3.0.1",
+    "description": "A simple sheet component built with Vue.js",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "main": "dist/vue-sheet.umd.cjs",
+    "module": "dist/vue-sheet.js",
+    "exports": {
+        ".": {
+            "import": "./dist/vue-sheet.js",
+            "require": "./dist/vue-sheet.umd.cjs",
+            "default": "./dist/vue-sheet.umd.cjs"
+        },
+        "./dist/style.css": "./dist/style.css"
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build --mode lib",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "vue": "^3.2.45"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.0.0",
+        "sass": "^1.58.0",
+        "vite": "^4.1.0"
+    },
+    "author": {
+        "name": "Calum Chamberlain",
+        "email": "calum@appoly.co.uk"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/appoly/vue-sheet/issues"
+    },
+    "homepage": "https://github.com/appoly/vue-sheet#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/appoly/vue-sheet.git"
+    },
+    "keywords": [
+        "vuejs",
+        "sheets",
+        "sheet",
+        "popup",
+        "toast",
+        "dialog"
+    ]
+}
