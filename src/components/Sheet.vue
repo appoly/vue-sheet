@@ -49,9 +49,11 @@ const props = defineProps({
 const emit = defineEmits(["update:open"]);
 
 // State
+const initiated = ref(false);
 const isOpen = ref(false);
 const labelId = `sheet-label-${Math.random().toString(36).substring(7)}`;
 const descId = `sheet-desc-${Math.random().toString(36).substring(7)}`;
+const sheetId = `sheet-${Math.random().toString(36).substring(7)}`;
 
 // Computed
 const isTopOrBottom = computed(() => ["top", "bottom"].includes(props.position));
@@ -64,6 +66,10 @@ const sizeStyles = computed(() => {
 
 // Methods
 const openSheet = () => {
+    
+    // this is here incase the trigger is not being used (props.noTrigger)
+    initiated.value = true;
+
     window.addEventListener("keydown", handleEsc);
     isOpen.value = true;
     emit("update:open", true);
@@ -99,19 +105,17 @@ watch(() => open, (newValue) => {
 </script>
 
 <template>
-    <div @click="openSheet" v-if="!noTrigger">
+    <div @click="openSheet" @mouseover="initiated = true" v-if="!noTrigger">
         <slot name="trigger">
-            <button type="button" class="open-btn" aria-controls="sheet" aria-expanded="false" @click="openSheet">
+            <button type="button" class="open-btn" :aria-controls="sheetId" aria-expanded="false" @click="openSheet">
                 Open
             </button>
         </slot>
     </div>
     <Teleport to="body">
-        <!-- Background Overlay -->
         <div v-if="isOpen" class="overlay" @click="closeSheet"></div>
 
-        <!-- Slide Sheet -->
-        <div id="sheet" :class="['sheet', position, { 'open': isOpen }]" role="dialog" aria-modal="true" tabindex="-1"
+        <div v-if="initiated" :id="sheetId" :class="['sheet', position, { 'open': isOpen }]" role="dialog" aria-modal="true" tabindex="-1"
             :style="sizeStyles" :aria-labelledby="labelId" :aria-describedby="descId">
             <button class="close-btn" @click="closeSheet" aria-label="Close">
                 <slot name="close">
