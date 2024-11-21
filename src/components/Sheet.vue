@@ -76,14 +76,16 @@ const closeSheet = () => {
 };
 
 const handleEsc = (event) => {
-    if ((event.key === "Escape" || event.key === "Esc") && closeOnEscape) {
+    if ((event.key === "Escape" || event.key === "Esc") && props.closeOnEscape) {
         closeSheet();
     }
 };
 
 // Lifecycle Hooks
 onMounted(() => {
-    isOpen.value = open;
+    if(props.open) {
+        openSheet();
+    }
 });
 
 onBeforeUnmount(() => {

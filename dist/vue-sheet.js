@@ -1,8 +1,8 @@
-import { ref as k, computed as m, onMounted as b, onBeforeUnmount as x, watch as S, openBlock as a, createElementBlock as c, Fragment as _, renderSlot as u, createElementVNode as s, createCommentVNode as g, createBlock as E, Teleport as $, normalizeClass as B, normalizeStyle as C } from "vue";
+import { ref as k, computed as m, onMounted as b, onBeforeUnmount as x, watch as S, openBlock as a, createElementBlock as u, Fragment as _, renderSlot as p, createElementVNode as s, createCommentVNode as g, createBlock as E, Teleport as $, normalizeClass as B, normalizeStyle as C } from "vue";
 const W = (e, o) => {
   const t = e.__vccOpts || e;
-  for (const [i, n] of o)
-    t[i] = n;
+  for (const [i, r] of o)
+    t[i] = r;
   return t;
 }, I = { class: "sheet-content" }, O = {
   __name: "Sheet",
@@ -36,56 +36,56 @@ const W = (e, o) => {
   },
   emits: ["update:open"],
   setup(e, { emit: o }) {
-    const t = e, i = o, n = k(!1), v = `sheet-label-${Math.random().toString(36).substring(7)}`, f = `sheet-desc-${Math.random().toString(36).substring(7)}`, w = m(() => ["top", "bottom"].includes(t.position)), y = m(() => w.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), p = () => {
-      window.addEventListener("keydown", d), n.value = !0, i("update:open", !0);
-    }, l = () => {
-      window.removeEventListener("keydown", d), n.value = !1, i("update:open", !1);
-    }, d = (r) => {
-      (r.key === "Escape" || r.key === "Esc") && closeOnEscape && l();
+    const t = e, i = o, r = k(!1), f = `sheet-label-${Math.random().toString(36).substring(7)}`, v = `sheet-desc-${Math.random().toString(36).substring(7)}`, w = m(() => ["top", "bottom"].includes(t.position)), y = m(() => w.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), l = () => {
+      window.addEventListener("keydown", c), r.value = !0, i("update:open", !0);
+    }, d = () => {
+      window.removeEventListener("keydown", c), r.value = !1, i("update:open", !1);
+    }, c = (n) => {
+      (n.key === "Escape" || n.key === "Esc") && t.closeOnEscape && d();
     };
     return b(() => {
-      n.value = open;
+      t.open && l();
     }), x(() => {
-      window.removeEventListener("keydown", d);
-    }), S(() => open, (r) => {
-      n.value = r;
-    }), (r, h) => (a(), c(_, null, [
-      e.noTrigger ? g("", !0) : (a(), c("div", {
+      window.removeEventListener("keydown", c);
+    }), S(() => open, (n) => {
+      r.value = n;
+    }), (n, h) => (a(), u(_, null, [
+      e.noTrigger ? g("", !0) : (a(), u("div", {
         key: 0,
-        onClick: p
+        onClick: l
       }, [
-        u(r.$slots, "trigger", {}, () => [
+        p(n.$slots, "trigger", {}, () => [
           s("button", {
             type: "button",
             class: "open-btn",
             "aria-controls": "sheet",
             "aria-expanded": "false",
-            onClick: p
+            onClick: l
           }, " Open ")
         ], !0)
       ])),
       (a(), E($, { to: "body" }, [
-        n.value ? (a(), c("div", {
+        r.value ? (a(), u("div", {
           key: 0,
           class: "overlay",
-          onClick: l
+          onClick: d
         })) : g("", !0),
         s("div", {
           id: "sheet",
-          class: B(["sheet", e.position, { open: n.value }]),
+          class: B(["sheet", e.position, { open: r.value }]),
           role: "dialog",
           "aria-modal": "true",
           tabindex: "-1",
           style: C(y.value),
-          "aria-labelledby": v,
-          "aria-describedby": f
+          "aria-labelledby": f,
+          "aria-describedby": v
         }, [
           s("button", {
             class: "close-btn",
-            onClick: l,
+            onClick: d,
             "aria-label": "Close"
           }, [
-            u(r.$slots, "close", {}, () => [
+            p(n.$slots, "close", {}, () => [
               h[0] || (h[0] = s("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 width: "24",
@@ -104,13 +104,13 @@ const W = (e, o) => {
             ], !0)
           ]),
           s("div", I, [
-            u(r.$slots, "default", {}, void 0, !0)
+            p(n.$slots, "default", {}, void 0, !0)
           ])
         ], 6)
       ]))
     ], 64));
   }
-}, T = /* @__PURE__ */ W(O, [["__scopeId", "data-v-3004d935"]]);
+}, T = /* @__PURE__ */ W(O, [["__scopeId", "data-v-05d1c092"]]);
 export {
   T as Sheet
 };
