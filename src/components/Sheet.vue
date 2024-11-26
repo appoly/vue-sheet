@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from "vue";
 
 // Props
 const props = defineProps({
@@ -43,8 +43,6 @@ const props = defineProps({
     noTrigger: { type: Boolean, default: false },
 });
 
-
-
 // Emits
 const emit = defineEmits(["update:open"]);
 
@@ -71,8 +69,10 @@ const openSheet = () => {
     initiated.value = true;
 
     window.addEventListener("keydown", handleEsc);
-    isOpen.value = true;
-    emit("update:open", true);
+    nextTick(() => {
+        isOpen.value = true;
+        emit("update:open", true);
+    });
 };
 
 const closeSheet = () => {
@@ -99,8 +99,10 @@ onBeforeUnmount(() => {
 });
 
 // Watchers
-watch(() => open, (newValue) => {
-    isOpen.value = newValue;
+watch(() => props.open, (newValue) => {
+    if(newValue) {
+        openSheet();
+    }
 });
 </script>
 
