@@ -41,6 +41,10 @@ const props = defineProps({
     open: { type: Boolean, default: false },
     closeOnEscape: { type: Boolean, default: true },
     noTrigger: { type: Boolean, default: false },
+    canClose: {
+        type: Function,
+        default: () => () => true
+    },
 });
 
 // Emits
@@ -64,7 +68,6 @@ const sizeStyles = computed(() => {
 
 // Methods
 const openSheet = () => {
-    
     // this is here incase the trigger is not being used (props.noTrigger)
     initiated.value = true;
 
@@ -75,10 +78,13 @@ const openSheet = () => {
     });
 };
 
-const closeSheet = () => {
-    window.removeEventListener("keydown", handleEsc);
-    isOpen.value = false;
-    emit("update:open", false);
+const closeSheet = async () => {
+    const shouldClose = await props.canClose();
+    if (shouldClose) {
+        window.removeEventListener("keydown", handleEsc);
+        isOpen.value = false;
+        emit("update:open", false);
+    }
 };
 
 const handleEsc = (event) => {
@@ -89,7 +95,7 @@ const handleEsc = (event) => {
 
 // Lifecycle Hooks
 onMounted(() => {
-    if(props.open) {
+    if (props.open) {
         openSheet();
     }
 });
@@ -100,7 +106,7 @@ onBeforeUnmount(() => {
 
 // Watchers
 watch(() => props.open, (newValue) => {
-    if(newValue) {
+    if (newValue) {
         openSheet();
     }
 });
@@ -117,8 +123,8 @@ watch(() => props.open, (newValue) => {
     <Teleport to="body">
         <div v-if="isOpen" class="overlay" @click="closeSheet"></div>
 
-        <div v-if="initiated" :id="sheetId" :class="['sheet', position, { 'open': isOpen }]" role="dialog" aria-modal="true" tabindex="-1"
-            :style="sizeStyles" :aria-labelledby="labelId" :aria-describedby="descId">
+        <div v-if="initiated" :id="sheetId" :class="['sheet', position, { 'open': isOpen }]" role="dialog"
+            aria-modal="true" tabindex="-1" :style="sizeStyles" :aria-labelledby="labelId" :aria-describedby="descId">
             <button class="close-btn" @click="closeSheet" aria-label="Close">
                 <slot name="close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -228,10 +234,10 @@ watch(() => props.open, (newValue) => {
 /* Open Button */
 .open-btn {
     background-color: #1a1a1a;
-    color: #ffffff; 
+    color: #ffffff;
     border: none;
-    border-radius: 4px; 
-    padding: 8px 16px; 
+    border-radius: 4px;
+    padding: 8px 16px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;

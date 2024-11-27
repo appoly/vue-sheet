@@ -1,8 +1,8 @@
-import { ref as f, computed as y, onMounted as S, onBeforeUnmount as _, watch as $, openBlock as i, createElementBlock as c, Fragment as E, renderSlot as m, createElementVNode as r, createCommentVNode as g, createBlock as B, Teleport as C, normalizeClass as I, normalizeStyle as W, nextTick as M } from "vue";
+import { ref as v, computed as y, onMounted as S, onBeforeUnmount as C, watch as _, openBlock as i, createElementBlock as c, Fragment as $, renderSlot as m, createElementVNode as s, createCommentVNode as f, createBlock as E, Teleport as B, normalizeClass as I, normalizeStyle as W, nextTick as M } from "vue";
 const O = (e, o) => {
   const t = e.__vccOpts || e;
-  for (const [a, s] of o)
-    t[a] = s;
+  for (const [a, r] of o)
+    t[a] = r;
   return t;
 }, T = { class: "sheet-content" }, j = {
   __name: "Sheet",
@@ -32,50 +32,54 @@ const O = (e, o) => {
     maxHeight: { type: String, default: "90%", validator: (e) => e.endsWith("%") },
     open: { type: Boolean, default: !1 },
     closeOnEscape: { type: Boolean, default: !0 },
-    noTrigger: { type: Boolean, default: !1 }
+    noTrigger: { type: Boolean, default: !1 },
+    canClose: {
+      type: Function,
+      default: () => () => !0
+    }
   },
   emits: ["update:open"],
   setup(e, { emit: o }) {
-    const t = e, a = o, s = f(!1), l = f(!1), w = `sheet-label-${Math.random().toString(36).substring(7)}`, k = `sheet-desc-${Math.random().toString(36).substring(7)}`, v = `sheet-${Math.random().toString(36).substring(7)}`, b = y(() => ["top", "bottom"].includes(t.position)), x = y(() => b.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), d = () => {
-      s.value = !0, window.addEventListener("keydown", h), M(() => {
+    const t = e, a = o, r = v(!1), l = v(!1), w = `sheet-label-${Math.random().toString(36).substring(7)}`, k = `sheet-desc-${Math.random().toString(36).substring(7)}`, g = `sheet-${Math.random().toString(36).substring(7)}`, b = y(() => ["top", "bottom"].includes(t.position)), x = y(() => b.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), d = () => {
+      r.value = !0, window.addEventListener("keydown", h), M(() => {
         l.value = !0, a("update:open", !0);
       });
-    }, p = () => {
-      window.removeEventListener("keydown", h), l.value = !1, a("update:open", !1);
+    }, p = async () => {
+      await t.canClose() && (window.removeEventListener("keydown", h), l.value = !1, a("update:open", !1));
     }, h = (n) => {
       (n.key === "Escape" || n.key === "Esc") && t.closeOnEscape && p();
     };
     return S(() => {
       t.open && d();
-    }), _(() => {
+    }), C(() => {
       window.removeEventListener("keydown", h);
-    }), $(() => t.open, (n) => {
+    }), _(() => t.open, (n) => {
       n && d();
-    }), (n, u) => (i(), c(E, null, [
-      e.noTrigger ? g("", !0) : (i(), c("div", {
+    }), (n, u) => (i(), c($, null, [
+      e.noTrigger ? f("", !0) : (i(), c("div", {
         key: 0,
         onClick: d,
-        onMouseover: u[0] || (u[0] = (z) => s.value = !0)
+        onMouseover: u[0] || (u[0] = (z) => r.value = !0)
       }, [
         m(n.$slots, "trigger", {}, () => [
-          r("button", {
+          s("button", {
             type: "button",
             class: "open-btn",
-            "aria-controls": v,
+            "aria-controls": g,
             "aria-expanded": "false",
             onClick: d
           }, " Open ")
         ], !0)
       ], 32)),
-      (i(), B(C, { to: "body" }, [
+      (i(), E(B, { to: "body" }, [
         l.value ? (i(), c("div", {
           key: 0,
           class: "overlay",
           onClick: p
-        })) : g("", !0),
-        s.value ? (i(), c("div", {
+        })) : f("", !0),
+        r.value ? (i(), c("div", {
           key: 1,
-          id: v,
+          id: g,
           class: I(["sheet", e.position, { open: l.value }]),
           role: "dialog",
           "aria-modal": "true",
@@ -84,13 +88,13 @@ const O = (e, o) => {
           "aria-labelledby": w,
           "aria-describedby": k
         }, [
-          r("button", {
+          s("button", {
             class: "close-btn",
             onClick: p,
             "aria-label": "Close"
           }, [
             m(n.$slots, "close", {}, () => [
-              u[1] || (u[1] = r("svg", {
+              u[1] || (u[1] = s("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 width: "24",
                 height: "24",
@@ -102,19 +106,19 @@ const O = (e, o) => {
                 "stroke-linejoin": "round",
                 class: "lucide lucide-x"
               }, [
-                r("path", { d: "M18 6 6 18" }),
-                r("path", { d: "m6 6 12 12" })
+                s("path", { d: "M18 6 6 18" }),
+                s("path", { d: "m6 6 12 12" })
               ], -1))
             ], !0)
           ]),
-          r("div", T, [
+          s("div", T, [
             m(n.$slots, "default", {}, void 0, !0)
           ])
-        ], 6)) : g("", !0)
+        ], 6)) : f("", !0)
       ]))
     ], 64));
   }
-}, L = /* @__PURE__ */ O(j, [["__scopeId", "data-v-e2386242"]]);
+}, L = /* @__PURE__ */ O(j, [["__scopeId", "data-v-ade457ae"]]);
 export {
   L as Sheet
 };

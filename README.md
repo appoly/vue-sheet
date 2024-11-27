@@ -22,7 +22,11 @@ yarn add @appoly/vue-sheet
 
 ```vue
 <template>
-  <Sheet v-model:open="isOpen" @update:open="isOpen = $event" position="right">
+  <Sheet v-model:open="isOpen"
+    @update:open="isOpen = $event"
+    position="right"
+    can-close="canClose"
+  >
     <template #trigger>
       <button>Open Sheet</button>
     </template>
@@ -40,6 +44,9 @@ import { Sheet } from '@appoly/vue-sheet'
 import'@appoly/vue-sheet/dist/style.css';
 
 const isOpen = ref(false)
+const canClose = () => {
+  return confirm('Are you sure you want to close the sheet?')
+}
 </script>
 
 ```
@@ -56,6 +63,7 @@ const isOpen = ref(false)
 | `open` | `Boolean` | `false` | Control sheet open state |
 | `closeOnEscape` | `Boolean` | `true` | Close sheet when Escape is pressed |
 | `noTrigger` | `Boolean` | `false` | Disable default trigger |
+| `canClose` | `Function` | `() => true` | Custom function to determine if the sheet can be closed |
 
 ## Slots
 
