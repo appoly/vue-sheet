@@ -106,9 +106,9 @@ onBeforeUnmount(() => {
 
 // Watchers
 watch(() => props.open, (newValue) => {
-    if (newValue) {
+    if (newValue && !isOpen.value) {
         openSheet();
-    }else{
+    } else if (!newValue && isOpen.value) {
         closeSheet();
     }
 });

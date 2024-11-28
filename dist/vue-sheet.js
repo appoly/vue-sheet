@@ -1,8 +1,8 @@
-import { ref as v, computed as y, onMounted as S, onBeforeUnmount as C, watch as _, openBlock as i, createElementBlock as p, Fragment as $, renderSlot as m, createElementVNode as s, createCommentVNode as f, createBlock as E, Teleport as B, normalizeClass as I, normalizeStyle as W, nextTick as M } from "vue";
-const O = (e, o) => {
+import { ref as g, computed as y, onMounted as S, onBeforeUnmount as C, watch as _, openBlock as a, createElementBlock as p, Fragment as $, renderSlot as f, createElementVNode as r, createCommentVNode as m, createBlock as E, Teleport as B, normalizeClass as I, normalizeStyle as W, nextTick as M } from "vue";
+const O = (e, n) => {
   const t = e.__vccOpts || e;
-  for (const [l, r] of o)
-    t[l] = r;
+  for (const [l, i] of n)
+    t[l] = i;
   return t;
 }, T = { class: "sheet-content" }, j = {
   __name: "Sheet",
@@ -16,16 +16,16 @@ const O = (e, o) => {
       type: String,
       default: "500px",
       validator: (e) => {
-        const o = ["%", "px", "em", "rem", "vw", "vh"];
-        return o.some((t) => e.endsWith(t)) ? !0 : (console.error(`Invalid width: "${e}". Allowed endings are ${o.join(", ")}.`), !1);
+        const n = ["%", "px", "em", "rem", "vw", "vh"];
+        return n.some((t) => e.endsWith(t)) ? !0 : (console.error(`Invalid width: "${e}". Allowed endings are ${n.join(", ")}.`), !1);
       }
     },
     height: {
       type: String,
       default: "500px",
       validator: (e) => {
-        const o = ["%", "px", "em", "rem", "vw", "vh"];
-        return o.some((t) => e.endsWith(t)) ? !0 : (console.error(`Invalid width: "${e}". Allowed endings are ${o.join(", ")}.`), !1);
+        const n = ["%", "px", "em", "rem", "vw", "vh"];
+        return n.some((t) => e.endsWith(t)) ? !0 : (console.error(`Invalid width: "${e}". Allowed endings are ${n.join(", ")}.`), !1);
       }
     },
     maxWidth: { type: String, default: "90%", validator: (e) => e.endsWith("%") },
@@ -39,62 +39,62 @@ const O = (e, o) => {
     }
   },
   emits: ["update:open"],
-  setup(e, { emit: o }) {
-    const t = e, l = o, r = v(!1), a = v(!1), w = `sheet-label-${Math.random().toString(36).substring(7)}`, b = `sheet-desc-${Math.random().toString(36).substring(7)}`, g = `sheet-${Math.random().toString(36).substring(7)}`, k = y(() => ["top", "bottom"].includes(t.position)), x = y(() => k.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), d = () => {
-      r.value = !0, window.addEventListener("keydown", h), M(() => {
-        a.value = !0, l("update:open", !0);
+  setup(e, { emit: n }) {
+    const t = e, l = n, i = g(!1), s = g(!1), w = `sheet-label-${Math.random().toString(36).substring(7)}`, k = `sheet-desc-${Math.random().toString(36).substring(7)}`, v = `sheet-${Math.random().toString(36).substring(7)}`, b = y(() => ["top", "bottom"].includes(t.position)), x = y(() => b.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), d = () => {
+      i.value = !0, window.addEventListener("keydown", h), M(() => {
+        s.value = !0, l("update:open", !0);
       });
     }, u = async () => {
-      await t.canClose() && (window.removeEventListener("keydown", h), a.value = !1, l("update:open", !1));
-    }, h = (n) => {
-      (n.key === "Escape" || n.key === "Esc") && t.closeOnEscape && u();
+      await t.canClose() && (window.removeEventListener("keydown", h), s.value = !1, l("update:open", !1));
+    }, h = (o) => {
+      (o.key === "Escape" || o.key === "Esc") && t.closeOnEscape && u();
     };
     return S(() => {
       t.open && d();
     }), C(() => {
       window.removeEventListener("keydown", h);
-    }), _(() => t.open, (n) => {
-      n ? d() : u();
-    }), (n, c) => (i(), p($, null, [
-      e.noTrigger ? f("", !0) : (i(), p("div", {
+    }), _(() => t.open, (o) => {
+      o && !s.value ? d() : !o && s.value && u();
+    }), (o, c) => (a(), p($, null, [
+      e.noTrigger ? m("", !0) : (a(), p("div", {
         key: 0,
         onClick: d,
-        onMouseover: c[0] || (c[0] = (z) => r.value = !0)
+        onMouseover: c[0] || (c[0] = (z) => i.value = !0)
       }, [
-        m(n.$slots, "trigger", {}, () => [
-          s("button", {
+        f(o.$slots, "trigger", {}, () => [
+          r("button", {
             type: "button",
             class: "open-btn",
-            "aria-controls": g,
+            "aria-controls": v,
             "aria-expanded": "false",
             onClick: d
           }, " Open ")
         ], !0)
       ], 32)),
-      (i(), E(B, { to: "body" }, [
-        a.value ? (i(), p("div", {
+      (a(), E(B, { to: "body" }, [
+        s.value ? (a(), p("div", {
           key: 0,
           class: "overlay",
           onClick: u
-        })) : f("", !0),
-        r.value ? (i(), p("div", {
+        })) : m("", !0),
+        i.value ? (a(), p("div", {
           key: 1,
-          id: g,
-          class: I(["sheet", e.position, { open: a.value }]),
+          id: v,
+          class: I(["sheet", e.position, { open: s.value }]),
           role: "dialog",
           "aria-modal": "true",
           tabindex: "-1",
           style: W(x.value),
           "aria-labelledby": w,
-          "aria-describedby": b
+          "aria-describedby": k
         }, [
-          s("button", {
+          r("button", {
             class: "close-btn",
             onClick: u,
             "aria-label": "Close"
           }, [
-            m(n.$slots, "close", {}, () => [
-              c[1] || (c[1] = s("svg", {
+            f(o.$slots, "close", {}, () => [
+              c[1] || (c[1] = r("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 width: "24",
                 height: "24",
@@ -106,19 +106,19 @@ const O = (e, o) => {
                 "stroke-linejoin": "round",
                 class: "lucide lucide-x"
               }, [
-                s("path", { d: "M18 6 6 18" }),
-                s("path", { d: "m6 6 12 12" })
+                r("path", { d: "M18 6 6 18" }),
+                r("path", { d: "m6 6 12 12" })
               ], -1))
             ], !0)
           ]),
-          s("div", T, [
-            m(n.$slots, "default", {}, void 0, !0)
+          r("div", T, [
+            f(o.$slots, "default", {}, void 0, !0)
           ])
-        ], 6)) : f("", !0)
+        ], 6)) : m("", !0)
       ]))
     ], 64));
   }
-}, L = /* @__PURE__ */ O(j, [["__scopeId", "data-v-d1d50be7"]]);
+}, L = /* @__PURE__ */ O(j, [["__scopeId", "data-v-7f59a145"]]);
 export {
   L as Sheet
 };
