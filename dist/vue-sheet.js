@@ -1,8 +1,8 @@
-import { ref as v, computed as y, onMounted as S, onBeforeUnmount as C, watch as _, openBlock as i, createElementBlock as c, Fragment as $, renderSlot as m, createElementVNode as s, createCommentVNode as f, createBlock as E, Teleport as B, normalizeClass as I, normalizeStyle as W, nextTick as M } from "vue";
+import { ref as v, computed as y, onMounted as S, onBeforeUnmount as C, watch as _, openBlock as i, createElementBlock as p, Fragment as $, renderSlot as m, createElementVNode as s, createCommentVNode as f, createBlock as E, Teleport as B, normalizeClass as I, normalizeStyle as W, nextTick as M } from "vue";
 const O = (e, o) => {
   const t = e.__vccOpts || e;
-  for (const [a, r] of o)
-    t[a] = r;
+  for (const [l, r] of o)
+    t[l] = r;
   return t;
 }, T = { class: "sheet-content" }, j = {
   __name: "Sheet",
@@ -40,26 +40,26 @@ const O = (e, o) => {
   },
   emits: ["update:open"],
   setup(e, { emit: o }) {
-    const t = e, a = o, r = v(!1), l = v(!1), w = `sheet-label-${Math.random().toString(36).substring(7)}`, k = `sheet-desc-${Math.random().toString(36).substring(7)}`, g = `sheet-${Math.random().toString(36).substring(7)}`, b = y(() => ["top", "bottom"].includes(t.position)), x = y(() => b.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), d = () => {
+    const t = e, l = o, r = v(!1), a = v(!1), w = `sheet-label-${Math.random().toString(36).substring(7)}`, b = `sheet-desc-${Math.random().toString(36).substring(7)}`, g = `sheet-${Math.random().toString(36).substring(7)}`, k = y(() => ["top", "bottom"].includes(t.position)), x = y(() => k.value ? { height: t.height, maxHeight: t.maxHeight } : { width: t.width, maxWidth: t.maxWidth }), d = () => {
       r.value = !0, window.addEventListener("keydown", h), M(() => {
-        l.value = !0, a("update:open", !0);
+        a.value = !0, l("update:open", !0);
       });
-    }, p = async () => {
-      await t.canClose() && (window.removeEventListener("keydown", h), l.value = !1, a("update:open", !1));
+    }, u = async () => {
+      await t.canClose() && (window.removeEventListener("keydown", h), a.value = !1, l("update:open", !1));
     }, h = (n) => {
-      (n.key === "Escape" || n.key === "Esc") && t.closeOnEscape && p();
+      (n.key === "Escape" || n.key === "Esc") && t.closeOnEscape && u();
     };
     return S(() => {
       t.open && d();
     }), C(() => {
       window.removeEventListener("keydown", h);
     }), _(() => t.open, (n) => {
-      n && d();
-    }), (n, u) => (i(), c($, null, [
-      e.noTrigger ? f("", !0) : (i(), c("div", {
+      n ? d() : u();
+    }), (n, c) => (i(), p($, null, [
+      e.noTrigger ? f("", !0) : (i(), p("div", {
         key: 0,
         onClick: d,
-        onMouseover: u[0] || (u[0] = (z) => r.value = !0)
+        onMouseover: c[0] || (c[0] = (z) => r.value = !0)
       }, [
         m(n.$slots, "trigger", {}, () => [
           s("button", {
@@ -72,29 +72,29 @@ const O = (e, o) => {
         ], !0)
       ], 32)),
       (i(), E(B, { to: "body" }, [
-        l.value ? (i(), c("div", {
+        a.value ? (i(), p("div", {
           key: 0,
           class: "overlay",
-          onClick: p
+          onClick: u
         })) : f("", !0),
-        r.value ? (i(), c("div", {
+        r.value ? (i(), p("div", {
           key: 1,
           id: g,
-          class: I(["sheet", e.position, { open: l.value }]),
+          class: I(["sheet", e.position, { open: a.value }]),
           role: "dialog",
           "aria-modal": "true",
           tabindex: "-1",
           style: W(x.value),
           "aria-labelledby": w,
-          "aria-describedby": k
+          "aria-describedby": b
         }, [
           s("button", {
             class: "close-btn",
-            onClick: p,
+            onClick: u,
             "aria-label": "Close"
           }, [
             m(n.$slots, "close", {}, () => [
-              u[1] || (u[1] = s("svg", {
+              c[1] || (c[1] = s("svg", {
                 xmlns: "http://www.w3.org/2000/svg",
                 width: "24",
                 height: "24",
@@ -118,7 +118,7 @@ const O = (e, o) => {
       ]))
     ], 64));
   }
-}, L = /* @__PURE__ */ O(j, [["__scopeId", "data-v-ade457ae"]]);
+}, L = /* @__PURE__ */ O(j, [["__scopeId", "data-v-d1d50be7"]]);
 export {
   L as Sheet
 };

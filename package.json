@@ -1,6 +1,6 @@
 {
     "name": "@appoly/vue-sheet",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "description": "A simple sheet component built with Vue.js",
     "type": "module",
     "files": [

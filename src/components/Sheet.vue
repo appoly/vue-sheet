@@ -108,6 +108,8 @@ onBeforeUnmount(() => {
 watch(() => props.open, (newValue) => {
     if (newValue) {
         openSheet();
+    }else{
+        closeSheet();
     }
 });
 </script>
