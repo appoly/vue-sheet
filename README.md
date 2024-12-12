@@ -10,6 +10,10 @@ A flexible, accessible, and customizable Sheet component for Vue 3. Inspired by 
 - Escape key support
 - Customizable trigger and close buttons
 
+## Dependencies
+
+- Vue 3.x
+
 ## Installation
 
 ```bash
@@ -20,7 +24,7 @@ yarn add @appoly/vue-sheet
 
 ## Usage
 
-### Basic Usage [Stack Blitz](https://stackblitz.com/edit/vue-sheet-basic?file=src%2FApp.vue)
+Basic Usage
 ```vue
 <template>
   <Sheet 
@@ -43,23 +47,24 @@ yarn add @appoly/vue-sheet
 <script setup>
 import { ref } from 'vue'
 import { Sheet } from '@appoly/vue-sheet'
-import'@appoly/vue-sheet/dist/style.css';
+import '@appoly/vue-sheet/dist/style.css'
 
 const isOpen = ref(false)
 const canClose = () => {
   return confirm('Are you sure you want to close the sheet?')
 }
 </script>
-
 ```
 
-### Expandable
+[Try it out on StackBlitz](https://stackblitz.com/edit/vue-sheet-basic?file=src%2FApp.vue)
+
+Expandable
 ```vue
 <template>
   <Sheet
     position="left"
     expandable
-    expand-default="true"
+    :expand-default="true"
   >
     <template #trigger>
       <button>Open Sheet</button>
@@ -73,7 +78,7 @@ const canClose = () => {
 </template>
 ```
 
-### Custom Buttons
+Custom Buttons
 ```vue
 <template>
   <Sheet 
@@ -105,19 +110,19 @@ const canClose = () => {
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `position` | `String` | `"right"` | Sheet slide direction (left/right/top/bottom) |
-| `width` | `String` | `"500px"` | Width of sheet (when left/right) |
-| `height` | `String` | `"500px"` | Height of sheet (when top/bottom) |
-| `maxWidth` | `String` | `"90%"` | Maximum width of sheet |
-| `maxHeight` | `String` | `"90%"` | Maximum height of sheet |
-| `open` | `Boolean` | `false` | Control sheet open state |
-| `closeOnEscape` | `Boolean` | `true` | Close sheet when Escape is pressed |
-| `noTrigger` | `Boolean` | `false` | Disable default trigger |
-| `canClose` | `Function` | `() => true` | Custom function to determine if the sheet can be closed |
-| `expandable` | `Boolean` | `false` | Allow the sheet to be expanded |
-| `expandDefault` | `Boolean` | `false` | Default expand state `true` means expanded |
+| Prop | Type | Default | Description | Allowed Values |
+|------|------|---------|-------------|----------------|
+| position | String | "right" | Sheet slide direction | "left", "right", "top", "bottom" |
+| width | String | "500px" | Width of sheet (when left/right) | CSS width values (px, %, em, rem, vw, vh) |
+| height | String | "500px" | Height of sheet (when top/bottom) | CSS height values (px, %, em, rem, vw, vh) |
+| maxWidth | String | "90%" | Maximum width of sheet | Percentage values |
+| maxHeight | String | "90%" | Maximum height of sheet | Percentage values |
+| open | Boolean | false | Control sheet open state | true/false |
+| closeOnEscape | Boolean | true | Close sheet when Escape is pressed | true/false |
+| noTrigger | Boolean | false | Disable default trigger | true/false |
+| canClose | Function | () => true | Custom function to determine if the sheet can be closed | Function returning boolean |
+| expandable | Boolean | false | Allow the sheet to be expanded | true/false |
+| expandDefault | Boolean | false | Default expand state (true means expanded) | true/false |
 
 ## Slots
 
