@@ -41,6 +41,8 @@ const props = defineProps({
     open: { type: Boolean, default: false },
     closeOnEscape: { type: Boolean, default: true },
     noTrigger: { type: Boolean, default: false },
+    expandable: { type: Boolean, default: false },
+    expandDefault: { type: Boolean, default: false },
     canClose: {
         type: Function,
         default: () => () => true
@@ -53,6 +55,7 @@ const emit = defineEmits(["update:open"]);
 // State
 const initiated = ref(false);
 const isOpen = ref(false);
+const isExpanded = ref(props.expandable ? props.expandDefault : false);
 const labelId = `sheet-label-${Math.random().toString(36).substring(7)}`;
 const descId = `sheet-desc-${Math.random().toString(36).substring(7)}`;
 const sheetId = `sheet-${Math.random().toString(36).substring(7)}`;
@@ -61,9 +64,11 @@ const sheetId = `sheet-${Math.random().toString(36).substring(7)}`;
 const isTopOrBottom = computed(() => ["top", "bottom"].includes(props.position));
 const sizeStyles = computed(() => {
     if (isTopOrBottom.value) {
-        return { height: props.height, maxHeight: props.maxHeight };
+        const height = props.expandable ? isExpanded.value ? `100vh` : props.height : props.height;
+        return { height: height, maxHeight: props.maxHeight };
     }
-    return { width: props.width, maxWidth: props.maxWidth };
+    const width = props.expandable ? isExpanded.value ? `100vw` : props.width : props.width;
+    return { width: width, maxWidth: props.maxWidth };
 });
 
 // Methods
@@ -93,6 +98,12 @@ const handleEsc = (event) => {
     }
 };
 
+const toggleExpand = () => {
+    if (props.expandable) {
+        isExpanded.value = !isExpanded.value;
+    }
+};
+
 // Lifecycle Hooks
 onMounted(() => {
     if (props.open) {
@@ -117,7 +128,7 @@ watch(() => props.open, (newValue) => {
 <template>
     <div @click="openSheet" @mouseover="initiated = true" v-if="!noTrigger">
         <slot name="trigger">
-            <button type="button" class="open-btn" :aria-controls="sheetId" aria-expanded="false" @click="openSheet">
+            <button type="button" class="open-btn" :aria-controls="sheetId" :aria-expanded="isOpen" @click="openSheet">
                 Open
             </button>
         </slot>
@@ -127,16 +138,41 @@ watch(() => props.open, (newValue) => {
 
         <div v-if="initiated" :id="sheetId" :class="['sheet', position, { 'open': isOpen }]" role="dialog"
             aria-modal="true" tabindex="-1" :style="sizeStyles" :aria-labelledby="labelId" :aria-describedby="descId">
-            <button class="close-btn" @click="closeSheet" aria-label="Close">
-                <slot name="close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-x">
-                        <path d="M18 6 6 18" />
-                        <path d="m6 6 12 12" />
-                    </svg>
-                </slot>
-            </button>
+
+            <div class="sheet-buttons">
+                <button class="icon-btn" v-if="expandable" @click="toggleExpand" aria-label="Expand">
+                    <slot name="maximize" v-if="!isExpanded">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-maximize">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                        </svg>
+                    </slot>
+                    <slot name="minimize" v-else>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-minimize">
+                            <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                            <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                            <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                            <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                        </svg>
+                    </slot>
+                </button>
+                <button class="icon-btn" @click="closeSheet" aria-label="Close">
+                    <slot name="close">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-x">
+                            <path d="M18 6 6 18" />
+                            <path d="m6 6 12 12" />
+                        </svg>
+                    </slot>
+                </button>
+            </div>
 
             <div class="sheet-content">
                 <slot />
@@ -164,7 +200,7 @@ watch(() => props.open, (newValue) => {
     z-index: 1000;
     overflow-y: auto;
     transition: transform 0.3s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
 
     &-content {
         padding: 1rem;
@@ -178,6 +214,7 @@ watch(() => props.open, (newValue) => {
     height: 100%;
     width: 300px;
     transform: translateX(-100%);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.06);
 }
 
 .sheet.right {
@@ -186,6 +223,7 @@ watch(() => props.open, (newValue) => {
     height: 100%;
     width: 300px;
     transform: translateX(100%);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.06);
 }
 
 .sheet.top {
@@ -194,6 +232,7 @@ watch(() => props.open, (newValue) => {
     width: 100%;
     height: 200px;
     transform: translateY(-100%);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .sheet.bottom {
@@ -202,6 +241,7 @@ watch(() => props.open, (newValue) => {
     width: 100%;
     height: 200px;
     transform: translateY(100%);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
 }
 
 /* Open States */
@@ -222,15 +262,21 @@ watch(() => props.open, (newValue) => {
 }
 
 /* Close Button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.icon-btn {
     background: transparent;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
     color: #333;
+}
+
+.sheet-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
 }
 
 /* Open Button */
