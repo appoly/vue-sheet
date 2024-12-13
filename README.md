@@ -77,6 +77,7 @@ Expandable
   </Sheet>
 </template>
 ```
+[Try it out on StackBlitz](https://stackblitz.com/edit/vue-sheet-basic-zmh3ukfn?file=src%2FApp.vue)
 
 Custom Buttons
 ```vue
@@ -107,6 +108,7 @@ Custom Buttons
   </Sheet>
 </template>
 ```
+[Try it out on StackBlitz](https://stackblitz.com/edit/vue-sheet-basic-br4j7zo3?file=src%2FApp.vue)
 
 ## Props
 
