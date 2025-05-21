@@ -1,10 +1,10 @@
-import { ref as g, computed as y, onMounted as B, onBeforeUnmount as M, watch as $, openBlock as l, createElementBlock as u, Fragment as E, renderSlot as c, createElementVNode as o, createCommentVNode as f, createBlock as O, Teleport as _, normalizeClass as z, normalizeStyle as I, nextTick as W } from "vue";
-const j = (t, a) => {
+import { ref as g, computed as w, onMounted as B, onBeforeUnmount as M, watch as $, openBlock as l, createElementBlock as u, Fragment as E, renderSlot as c, createElementVNode as o, createCommentVNode as m, createBlock as O, Teleport as _, normalizeClass as z, normalizeStyle as H, nextTick as I } from "vue";
+const W = (t, i) => {
   const e = t.__vccOpts || t;
-  for (const [h, d] of a)
+  for (const [h, d] of i)
     e[h] = d;
   return e;
-}, H = ["aria-expanded"], L = { class: "sheet-buttons" }, T = { class: "sheet-content" }, V = {
+}, j = ["aria-expanded"], T = { class: "sheet-buttons" }, L = { class: "sheet-content" }, V = {
   __name: "Sheet",
   props: {
     position: {
@@ -16,9 +16,9 @@ const j = (t, a) => {
       type: String,
       default: "500px",
       validator: (t) => {
-        const a = ["%", "px", "em", "rem", "vw", "vh"];
-        return a.some((e) => t.endsWith(e)) ? !0 : (console.error(
-          `Invalid width: "${t}". Allowed endings are ${a.join(
+        const i = ["%", "px", "em", "rem", "vw", "vh"];
+        return i.some((e) => t.endsWith(e)) ? !0 : (console.error(
+          `Invalid width: "${t}". Allowed endings are ${i.join(
             ", "
           )}.`
         ), !1);
@@ -28,9 +28,9 @@ const j = (t, a) => {
       type: String,
       default: "500px",
       validator: (t) => {
-        const a = ["%", "px", "em", "rem", "vw", "vh"];
-        return a.some((e) => t.endsWith(e)) ? !0 : (console.error(
-          `Invalid width: "${t}". Allowed endings are ${a.join(
+        const i = ["%", "px", "em", "rem", "vw", "vh"];
+        return i.some((e) => t.endsWith(e)) ? !0 : (console.error(
+          `Invalid width: "${t}". Allowed endings are ${i.join(
             ", "
           )}.`
         ), !1);
@@ -58,16 +58,16 @@ const j = (t, a) => {
     disableOutsideScroll: { type: Boolean, default: !1 }
   },
   emits: ["update:open"],
-  setup(t, { emit: a }) {
-    const e = t, h = a, d = g(!1), i = g(!1), r = g(e.expandable ? e.expandDefault : !1), b = `sheet-label-${Math.random().toString(36).substring(7)}`, k = `sheet-desc-${Math.random().toString(36).substring(7)}`, w = `sheet-${Math.random().toString(36).substring(7)}`, x = y(
+  setup(t, { emit: i }) {
+    const e = t, h = i, d = g(!1), a = g(!1), r = g(e.expandable ? e.expandDefault : !1), b = `sheet-label-${Math.random().toString(36).substring(7)}`, x = `sheet-desc-${Math.random().toString(36).substring(7)}`, y = `sheet-${Math.random().toString(36).substring(7)}`, k = w(
       () => ["top", "bottom"].includes(e.position)
-    ), S = y(() => x.value ? { height: e.expandable && r.value ? "100vh" : e.height, maxHeight: e.maxHeight } : { width: e.expandable && r.value ? "100vw" : e.width, maxWidth: e.maxWidth }), p = () => {
-      d.value = !0, window.addEventListener("keydown", m), e.disableOutsideScroll && document.body.classList.add("sheet-open"), W(() => {
-        i.value = !0, h("update:open", !0);
+    ), S = w(() => k.value ? { height: e.expandable && r.value ? "100vh" : e.height, maxHeight: e.maxHeight } : { width: e.expandable && r.value ? "100vw" : e.width, maxWidth: e.maxWidth }), p = () => {
+      d.value = !0, window.addEventListener("keydown", f), e.disableOutsideScroll && (document.body.style.overflow = "hidden", document.body.style.position = "fixed", document.body.style.maxHeight = "100vh"), I(() => {
+        a.value = !0, h("update:open", !0);
       });
     }, v = async () => {
-      await e.canClose() && (window.removeEventListener("keydown", m), e.disableOutsideScroll && document.body.classList.remove("sheet-open"), i.value = !1, h("update:open", !1));
-    }, m = (n) => {
+      await e.canClose() && (window.removeEventListener("keydown", f), e.disableOutsideScroll && (document.body.style.overflow = "", document.body.style.position = "", document.body.style.maxHeight = ""), a.value = !1, h("update:open", !1));
+    }, f = (n) => {
       (n.key === "Escape" || n.key === "Esc") && e.closeOnEscape && v();
     }, C = () => {
       e.expandable && (r.value = !r.value);
@@ -75,14 +75,14 @@ const j = (t, a) => {
     return B(() => {
       e.open && p();
     }), M(() => {
-      window.removeEventListener("keydown", m);
+      window.removeEventListener("keydown", f);
     }), $(
       () => e.open,
       (n) => {
-        n && !i.value ? p() : !n && i.value && v();
+        n && !a.value ? p() : !n && a.value && v();
       }
     ), (n, s) => (l(), u(E, null, [
-      t.noTrigger ? f("", !0) : (l(), u("div", {
+      t.noTrigger ? m("", !0) : (l(), u("div", {
         key: 0,
         onClick: p,
         onMouseover: s[0] || (s[0] = (A) => d.value = !0)
@@ -91,30 +91,30 @@ const j = (t, a) => {
           o("button", {
             type: "button",
             class: "open-btn",
-            "aria-controls": w,
-            "aria-expanded": i.value,
+            "aria-controls": y,
+            "aria-expanded": a.value,
             onClick: p
-          }, " Open ", 8, H)
+          }, " Open ", 8, j)
         ], !0)
       ], 32)),
       (l(), O(_, { to: "body" }, [
-        i.value ? (l(), u("div", {
+        a.value ? (l(), u("div", {
           key: 0,
           class: "overlay",
           onClick: v
-        })) : f("", !0),
+        })) : m("", !0),
         d.value ? (l(), u("div", {
           key: 1,
-          id: w,
-          class: z(["sheet", t.position, { open: i.value }]),
+          id: y,
+          class: z(["sheet", t.position, { open: a.value }]),
           role: "dialog",
           "aria-modal": "true",
           tabindex: "-1",
-          style: I(S.value),
+          style: H(S.value),
           "aria-labelledby": b,
-          "aria-describedby": k
+          "aria-describedby": x
         }, [
-          o("div", L, [
+          o("div", T, [
             t.expandable ? (l(), u("button", {
               key: 0,
               class: "icon-btn",
@@ -158,7 +158,7 @@ const j = (t, a) => {
                   o("path", { d: "M16 21h3a2 2 0 0 0 2-2v-3" })
                 ], -1))
               ], !0)
-            ])) : f("", !0),
+            ])) : m("", !0),
             o("button", {
               class: "icon-btn",
               onClick: v,
@@ -183,14 +183,14 @@ const j = (t, a) => {
               ], !0)
             ])
           ]),
-          o("div", T, [
+          o("div", L, [
             c(n.$slots, "default", {}, void 0, !0)
           ])
-        ], 6)) : f("", !0)
+        ], 6)) : m("", !0)
       ]))
     ], 64));
   }
-}, F = /* @__PURE__ */ j(V, [["__scopeId", "data-v-e01f7da9"]]);
+}, F = /* @__PURE__ */ W(V, [["__scopeId", "data-v-2816572a"]]);
 export {
   F as Sheet
 };

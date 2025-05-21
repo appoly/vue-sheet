@@ -117,7 +117,9 @@ const openSheet = () => {
     window.addEventListener("keydown", handleEsc);
 
     if (props.disableOutsideScroll) {
-        document.body.classList.add("sheet-open");
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.maxHeight = "100vh";
     }
 
     nextTick(() => {
@@ -132,7 +134,9 @@ const closeSheet = async () => {
         window.removeEventListener("keydown", handleEsc);
 
         if (props.disableOutsideScroll) {
-            document.body.classList.remove("sheet-open");
+            document.body.style.overflow = "";
+            document.body.style.position = "";
+            document.body.style.maxHeight = "";
         }
 
         isOpen.value = false;
@@ -396,11 +400,5 @@ watch(
     &:hover {
         background-color: #333333;
     }
-}
-
-body.sheet-open {
-    overflow: hidden;
-    position: fixed;
-    max-height: 100vh;
 }
 </style>
