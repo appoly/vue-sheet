@@ -1,5 +1,12 @@
 <script setup>
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from "vue";
+import {
+    ref,
+    computed,
+    watch,
+    onMounted,
+    onBeforeUnmount,
+    nextTick,
+} from "vue";
 
 // Props
 const props = defineProps({
@@ -15,29 +22,49 @@ const props = defineProps({
         },
     },
     width: {
-        type: String, default: "500px", validator: (value) => {
-            const endings = ['%', 'px', 'em', 'rem', 'vw', 'vh'];
+        type: String,
+        default: "500px",
+        validator: (value) => {
+            const endings = ["%", "px", "em", "rem", "vw", "vh"];
 
             if (!endings.some((ending) => value.endsWith(ending))) {
-                console.error(`Invalid width: "${value}". Allowed endings are ${endings.join(", ")}.`);
+                console.error(
+                    `Invalid width: "${value}". Allowed endings are ${endings.join(
+                        ", "
+                    )}.`
+                );
                 return false;
             }
             return true;
-        }
+        },
     },
     height: {
-        type: String, default: "500px", validator: (value) => {
-            const endings = ['%', 'px', 'em', 'rem', 'vw', 'vh'];
+        type: String,
+        default: "500px",
+        validator: (value) => {
+            const endings = ["%", "px", "em", "rem", "vw", "vh"];
 
             if (!endings.some((ending) => value.endsWith(ending))) {
-                console.error(`Invalid width: "${value}". Allowed endings are ${endings.join(", ")}.`);
+                console.error(
+                    `Invalid width: "${value}". Allowed endings are ${endings.join(
+                        ", "
+                    )}.`
+                );
                 return false;
             }
             return true;
-        }
+        },
     },
-    maxWidth: { type: String, default: "90%", validator: (value) => value.endsWith("%") },
-    maxHeight: { type: String, default: "90%", validator: (value) => value.endsWith("%") },
+    maxWidth: {
+        type: String,
+        default: "90%",
+        validator: (value) => value.endsWith("%"),
+    },
+    maxHeight: {
+        type: String,
+        default: "90%",
+        validator: (value) => value.endsWith("%"),
+    },
     open: { type: Boolean, default: false },
     closeOnEscape: { type: Boolean, default: true },
     noTrigger: { type: Boolean, default: false },
@@ -45,8 +72,9 @@ const props = defineProps({
     expandDefault: { type: Boolean, default: false },
     canClose: {
         type: Function,
-        default: () => () => true
+        default: () => () => true,
     },
+    disableOutsideScroll: { type: Boolean, default: false },
 });
 
 // Emits
@@ -61,13 +89,23 @@ const descId = `sheet-desc-${Math.random().toString(36).substring(7)}`;
 const sheetId = `sheet-${Math.random().toString(36).substring(7)}`;
 
 // Computed
-const isTopOrBottom = computed(() => ["top", "bottom"].includes(props.position));
+const isTopOrBottom = computed(() =>
+    ["top", "bottom"].includes(props.position)
+);
 const sizeStyles = computed(() => {
     if (isTopOrBottom.value) {
-        const height = props.expandable ? isExpanded.value ? `100vh` : props.height : props.height;
+        const height = props.expandable
+            ? isExpanded.value
+                ? `100vh`
+                : props.height
+            : props.height;
         return { height: height, maxHeight: props.maxHeight };
     }
-    const width = props.expandable ? isExpanded.value ? `100vw` : props.width : props.width;
+    const width = props.expandable
+        ? isExpanded.value
+            ? `100vw`
+            : props.width
+        : props.width;
     return { width: width, maxWidth: props.maxWidth };
 });
 
@@ -77,6 +115,11 @@ const openSheet = () => {
     initiated.value = true;
 
     window.addEventListener("keydown", handleEsc);
+
+    if (props.disableOutsideScroll) {
+        document.body.classList.add("sheet-open");
+    }
+
     nextTick(() => {
         isOpen.value = true;
         emit("update:open", true);
@@ -87,13 +130,21 @@ const closeSheet = async () => {
     const shouldClose = await props.canClose();
     if (shouldClose) {
         window.removeEventListener("keydown", handleEsc);
+
+        if (props.disableOutsideScroll) {
+            document.body.classList.remove("sheet-open");
+        }
+
         isOpen.value = false;
         emit("update:open", false);
     }
 };
 
 const handleEsc = (event) => {
-    if ((event.key === "Escape" || event.key === "Esc") && props.closeOnEscape) {
+    if (
+        (event.key === "Escape" || event.key === "Esc") &&
+        props.closeOnEscape
+    ) {
         closeSheet();
     }
 };
@@ -116,19 +167,28 @@ onBeforeUnmount(() => {
 });
 
 // Watchers
-watch(() => props.open, (newValue) => {
-    if (newValue && !isOpen.value) {
-        openSheet();
-    } else if (!newValue && isOpen.value) {
-        closeSheet();
+watch(
+    () => props.open,
+    (newValue) => {
+        if (newValue && !isOpen.value) {
+            openSheet();
+        } else if (!newValue && isOpen.value) {
+            closeSheet();
+        }
     }
-});
+);
 </script>
 
 <template>
     <div @click="openSheet" @mouseover="initiated = true" v-if="!noTrigger">
         <slot name="trigger">
-            <button type="button" class="open-btn" :aria-controls="sheetId" :aria-expanded="isOpen" @click="openSheet">
+            <button
+                type="button"
+                class="open-btn"
+                :aria-controls="sheetId"
+                :aria-expanded="isOpen"
+                @click="openSheet"
+            >
                 Open
             </button>
         </slot>
@@ -136,15 +196,37 @@ watch(() => props.open, (newValue) => {
     <Teleport to="body">
         <div v-if="isOpen" class="overlay" @click="closeSheet"></div>
 
-        <div v-if="initiated" :id="sheetId" :class="['sheet', position, { 'open': isOpen }]" role="dialog"
-            aria-modal="true" tabindex="-1" :style="sizeStyles" :aria-labelledby="labelId" :aria-describedby="descId">
-
+        <div
+            v-if="initiated"
+            :id="sheetId"
+            :class="['sheet', position, { open: isOpen }]"
+            role="dialog"
+            aria-modal="true"
+            tabindex="-1"
+            :style="sizeStyles"
+            :aria-labelledby="labelId"
+            :aria-describedby="descId"
+        >
             <div class="sheet-buttons">
-                <button class="icon-btn" v-if="expandable" @click="toggleExpand" aria-label="Expand">
+                <button
+                    class="icon-btn"
+                    v-if="expandable"
+                    @click="toggleExpand"
+                    aria-label="Expand"
+                >
                     <slot name="maximize" v-if="!isExpanded">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-maximize">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-maximize"
+                        >
                             <path d="M8 3H5a2 2 0 0 0-2 2v3" />
                             <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
                             <path d="M3 16v3a2 2 0 0 0 2 2h3" />
@@ -152,9 +234,18 @@ watch(() => props.open, (newValue) => {
                         </svg>
                     </slot>
                     <slot name="minimize" v-else>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-minimize">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-minimize"
+                        >
                             <path d="M8 3v3a2 2 0 0 1-2 2H3" />
                             <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
                             <path d="M3 16h3a2 2 0 0 1 2 2v3" />
@@ -164,9 +255,18 @@ watch(() => props.open, (newValue) => {
                 </button>
                 <button class="icon-btn" @click="closeSheet" aria-label="Close">
                     <slot name="close">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-x">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-x"
+                        >
                             <path d="M18 6 6 18" />
                             <path d="m6 6 12 12" />
                         </svg>
@@ -296,5 +396,11 @@ watch(() => props.open, (newValue) => {
     &:hover {
         background-color: #333333;
     }
+}
+
+body.sheet-open {
+    overflow: hidden;
+    position: fixed;
+    max-height: 100vh;
 }
 </style>
